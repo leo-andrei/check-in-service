@@ -1,0 +1,79 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: checkin_db
+      POSTGRES_USER: checkin_user
+      POSTGRES_PASSWORD: checkin_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U checkin_user -d checkin_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"   # AMQP port
+      - "15672:15672" # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  checkin-service:
+    build: 
+      context: .
+      dockerfile: Dockerfile.debug
+    ports:
+      - "8080:8080"
+      - "40000:40000"
+    volumes:
+      - .:/app
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      DATABASE_URL: "postgres://checkin_user:checkin_pass@postgres:5432/checkin_db?sslmode=disable"
+      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
+      LEGACY_API_URL: "http://legacy-api-mock:1080"
+      SMTP_HOST: "mailhog"
+      OTEL_EXPORTER: "stdout"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Mock legacy API (for testing)
+  legacy-api-mock:
+    image: mockserver/mockserver:latest
+    ports:
+      - "9000:1080"
+    environment:
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mockserver.json
+    volumes:
+      - ./mock-config:/config
+
+  # Mail catcher for testing emails
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+
+volumes:
+  postgres_data:
+  rabbitmq_data:

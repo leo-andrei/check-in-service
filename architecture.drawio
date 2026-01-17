@@ -1,0 +1,64 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Event-Driven Check-In System" id="event-driven-check-in-system">
+    <mxGraphModel dx="1000" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- User Device -->
+        <mxCell id="2" value="User Device (UI/Card Reader)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="180" width="160" height="60" as="geometry" />
+        </mxCell>
+        <!-- API Service -->
+        <mxCell id="3" value="API Service (Check-In/Out)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="260" y="180" width="180" height="60" as="geometry" />
+        </mxCell>
+        <!-- Message Queue -->
+        <mxCell id="4" value="Message Queue (RabbitMQ/SQS)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="520" y="180" width="180" height="60" as="geometry" />
+        </mxCell>
+        <!-- Worker Service -->
+        <mxCell id="5" value="Worker Service (Event Consumer)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="780" y="180" width="180" height="60" as="geometry" />
+        </mxCell>
+        <!-- Third-Party API -->
+        <mxCell id="6" value="Third-Party API (Legacy System)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="180" width="180" height="60" as="geometry" />
+        </mxCell>
+        <!-- DLQ -->
+        <mxCell id="7" value="Dead Letter Queue (DLQ)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="280" width="180" height="50" as="geometry" />
+        </mxCell>
+        <!-- Monitoring/Tracing -->
+        <mxCell id="8" value="Monitoring &amp; Tracing\n(Prometheus, OpenTelemetry, Grafana)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1e1e1;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="780" y="60" width="260" height="60" as="geometry" />
+        </mxCell>
+        <!-- Arrows -->
+        <mxCell id="9" style="endArrow=block;html=1;" edge="1" parent="1" source="2" target="3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="10" style="endArrow=block;html=1;" edge="1" parent="1" source="3" target="4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="11" style="endArrow=block;html=1;" edge="1" parent="1" source="4" target="5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="12" style="endArrow=block;html=1;" edge="1" parent="1" source="5" target="6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="13" style="endArrow=block;html=1;dashed=1;strokeColor=#666666;" edge="1" parent="1" source="4" target="7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Monitoring/Tracing arrows -->
+        <mxCell id="14" style="endArrow=open;dashed=1;strokeColor=#333333;html=1;" edge="1" parent="1" source="3" target="8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="15" style="endArrow=open;dashed=1;strokeColor=#333333;html=1;" edge="1" parent="1" source="5" target="8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="16" style="endArrow=open;dashed=1;strokeColor=#333333;html=1;" edge="1" parent="1" source="6" target="8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

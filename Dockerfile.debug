@@ -1,0 +1,18 @@
+FROM golang:1.25.5-bookworm
+
+WORKDIR /app
+
+# Dependencies
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Install tools
+RUN go install github.com/go-delve/delve/cmd/dlv@latest \
+    && go install github.com/air-verse/air@latest
+
+# Default ports
+EXPOSE 8080
+EXPOSE 40000
+
+# air will run dlv, not your app directly
+CMD ["air"]

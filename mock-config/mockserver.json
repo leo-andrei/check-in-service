@@ -1,0 +1,12 @@
+[
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/api/labor-cost"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": "{\"status\": \"success\"}"
+    }
+  }
+]
