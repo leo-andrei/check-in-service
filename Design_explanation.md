@@ -30,6 +30,8 @@ All the events are saved in a separate table and are periodically checked and ad
     * Distributed tracing - OpenTelemetry. I added an example of usage with spans in the publishing to queues part of the code. I also need to ensure the context is propagated through the whole flow (API, queue, worker) and to use a unique trace ID for each message. This can be exported to a backend (Jaeger, Tempo, or stdout for local dev)
     * Structured logging - Zap. I added a few logs, but on the long term I need to make sure every significant action is logged, with the trace ID and message ID.
     * Metrics - Prometheus. This one I didn't have the time to integrate. It should expose metrics for queue depth, processing latency, success/failure counts and DLQ size. Grafana daskboards are very useful to watch especially the DLQ. Alerts would also be in place.
+- Another small thing added in the code is a check if a check-in has already been made in the last 60 seconds, then it won't allow to make a check-out yet. This is to avoid the case where a user double taps a card reader by mistake.
+
 
 ## The project is functional and has most of the critical things integrated, but there's also a couple of things that need to be added to be Production ready:
 - Authentication - this one depends on how this API is used. If it's directly called by a card reader, a simple API key would suffice. If it's called from a UI, than a JWT auth would be recommended.
